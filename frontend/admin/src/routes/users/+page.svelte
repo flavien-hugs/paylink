@@ -78,8 +78,8 @@
 	</span>
 </div>
 
-<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-	<table class="w-full">
+<div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+	<table class="w-full min-w-[640px]">
 		<thead>
 			<tr class="border-b border-slate-200 text-left text-xs uppercase text-slate-400">
 				<th class="px-4 py-3 font-medium">Email</th>

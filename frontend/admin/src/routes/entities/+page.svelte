@@ -227,11 +227,11 @@
 	</div>
 </div>
 
-<div class="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+<div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
 	{#if filteredEntities.length === 0}
 		<p class="py-8 text-center text-slate-400">Aucune entité.</p>
 	{:else}
-		<table class="w-full">
+		<table class="w-full min-w-[720px]">
 			<thead>
 				<tr class="border-b border-slate-200 text-left text-xs uppercase text-slate-400">
 					<th class="px-4 py-3 font-medium">Entité</th>

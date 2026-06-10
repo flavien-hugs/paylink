@@ -49,7 +49,8 @@
 	{#if recent.length === 0}
 		<p class="py-8 text-center text-slate-400">Aucune transaction pour le moment.</p>
 	{:else}
-		<table class="w-full">
+		<div class="overflow-x-auto">
+		<table class="w-full min-w-[560px]">
 			<thead>
 				<tr class="border-b border-slate-200 text-left text-xs uppercase text-slate-400">
 					<th class="px-3 py-2 font-medium">Date</th>
@@ -72,5 +73,6 @@
 				{/each}
 			</tbody>
 		</table>
+		</div>
 	{/if}
 </div>
