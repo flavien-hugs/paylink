@@ -9,7 +9,7 @@ export const actions: Actions = {
 		const password = String(form.get('password') ?? '');
 
 		if (!email || !password) {
-			return fail(400, { error: 'Email et mot de passe requis.' });
+			return fail(400, { error: 'Email et mot de passe requis.', email });
 		}
 
 		try {

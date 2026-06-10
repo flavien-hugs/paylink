@@ -20,9 +20,9 @@ async def lifespan(app: FastAPI):
 def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.APP_NAME,
-        docs_url="/payment/docs" if settings.HIDE_DOCS is False else None, 
-        redoc_url="/payment/redoc" if settings.HIDE_DOCS is False else None, 
-        openapi_url="/payment/openapi.json" if settings.HIDE_DOCS is False else None, 
+        docs_url="/paylink/docs" if settings.HIDE_DOCS is False else None, 
+        redoc_url="/paylink/redoc" if settings.HIDE_DOCS is False else None, 
+        openapi_url="/paylink/openapi.json" if settings.HIDE_DOCS is False else None, 
         version=__version__,
         lifespan=lifespan
     )
