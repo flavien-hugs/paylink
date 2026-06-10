@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Node / SvelteKit
+node_modules/
+.svelte-kit/
+build/
+.vercel/
+package-lock.json
+
+# Env & secrets
+.env
+.env.local
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+.claude/

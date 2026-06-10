@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+	/* Entity branding — overridden per page via inline style. */
+	--brand-primary: #2563eb;
+	--brand-secondary: #1e293b;
+}
+
+html,
+body {
+	@apply bg-slate-100 text-slate-800 antialiased;
+	font-family: var(--font-sans);
+}

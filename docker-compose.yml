@@ -1,0 +1,76 @@
+# Reusable building blocks (YAML anchors).
+x-restart-policy: &restart unless-stopped
+
+# Shared config for the two SvelteKit (adapter-node) frontends.
+x-ui-service: &ui-service
+  restart: *restart
+  depends_on:
+    - backend
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: *restart
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-payment}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-payment}
+      POSTGRES_DB: ${POSTGRES_DB:-payment}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-payment}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    restart: *restart
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      # The base image launches gunicorn on APP_DEFAULT_PORT (defaults to 9090);
+      # pin it to 8000 to match the published port and the backend:8000 URLs.
+      APP_DEFAULT_PORT: 8000
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-payment}:${POSTGRES_PASSWORD:-payment}@postgres:5432/${POSTGRES_DB:-payment}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      FERNET_KEY: ${FERNET_KEY}
+      CORS_ORIGINS: '["http://localhost:5173","http://localhost:4173"]'
+      SEED_ON_START: ${SEED_ON_START:-true}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@sbbs.local}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-admin1234}
+      SEED_ENTITY_SLUG: ${SEED_ENTITY_SLUG:-sbbs}
+      SEED_ENTITY_NAME: ${SEED_ENTITY_NAME:-SBBS}
+      SEED_KKIAPAY_PUBLIC_KEY: ${SEED_KKIAPAY_PUBLIC_KEY:-your-sandbox-public-key}
+      SEED_KKIAPAY_PRIVATE_KEY: ${SEED_KKIAPAY_PRIVATE_KEY:-your-sandbox-private-key}
+      SEED_KKIAPAY_SECRET: ${SEED_KKIAPAY_SECRET:-your-sandbox-secret}
+    ports:
+      - "8000:8000"
+
+  payment-ui:
+    <<: *ui-service
+    build:
+      context: ./frontend/payment
+    environment:
+      PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8000/api}
+    ports:
+      - "5173:5173"
+
+  admin-ui:
+    <<: *ui-service
+    build:
+      context: ./frontend/admin
+    environment:
+      NODE_ENV: production
+      API_URL: ${ADMIN_API_URL:-http://backend:8000/api}
+      ORIGIN: ${ADMIN_ORIGIN:-http://localhost:4173}
+      PAYMENT_WEB_URL: ${PAYMENT_WEB_URL:-http://localhost:5173}
+    ports:
+      - "4173:4173"
+
+volumes:
+  pgdata:
