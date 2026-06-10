@@ -13,7 +13,7 @@ node_modules/
 .svelte-kit/
 build/
 .vercel/
-package-lock.json
+# NB: package-lock.json must be committed — npm ci and CI caching require it.
 
 # Env & secrets
 .env
