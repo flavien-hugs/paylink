@@ -13,6 +13,9 @@ RUN npm run build
 # build/ is self-contained, so no runtime node_modules are required.
 
 FROM gcr.io/distroless/nodejs20-debian12:nonroot AS run
+LABEL org.opencontainers.image.source="https://github.com/flavien-hugs/paylink" \
+      org.opencontainers.image.title="paylink-payment-ui" \
+      org.opencontainers.image.description="PayLink — branded Kkiapay payment page (SvelteKit)"
 WORKDIR /app
 ENV NODE_ENV=production \
     PORT=5173 \
